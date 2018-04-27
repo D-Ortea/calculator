@@ -100,7 +100,7 @@ describe('operate division', function() {
   });
 
   it('of a number by zero', function() {
-    expect(operate('/', 29, 0)).toEqual(NaN);
+    expect(operate('/', 29, 0)).toEqual(Infinity);
   });
 
   it('of a number by infinity', function() {
