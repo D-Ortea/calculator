@@ -3,6 +3,8 @@ const numInput = document.querySelector(`div[class="num-input"`);
 const keypad = document.querySelector(`div[class="keypad"`);
 
 let deleteInput = true;
+let result = 0;
+let previousOp = '';
 
 
 function addNumberKeyListeners() {
@@ -26,11 +28,29 @@ function addFnListeners() {
 }
 
 function addOpListeners() {
+  const opKeys = keypad.querySelectorAll('.op');
+  opKeys.forEach(opKey => {
+    opKey.addEventListener('click', () => {
 
+      if(deleteInput) {
+        expression.textContent = expression.textContent.slice(0, -3);
+      } else {
+        expression.textContent += numInput.textContent;
+        result = (previousOp) ? operate(previousOp, +result, +numInput.textContent)
+                              : +numInput.textContent;
+        numInput.textContent = result;
+      }
+      
+      previousOp = opKey.value;
+      expression.textContent += ` ${opKey.textContent} `;
+      deleteInput = true;
+
+    });
+  });
 }
 
-function resolveFn(key) {
-  window[key]();
+function resolveFn(key, ...args) {
+  window[key](args);
 }
 
 function deleteOne() {
@@ -53,6 +73,10 @@ function clearAll() {
   clearInput();
 }
 
+function evaluate() {
+  
+}
+
 function test() {
   console.log(expression);
   console.log(numInput);
@@ -61,3 +85,4 @@ function test() {
 test();
 addNumberKeyListeners();
 addFnListeners();
+addOpListeners();

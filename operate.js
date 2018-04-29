@@ -1,7 +1,25 @@
-// const math = require('./mathjs');
-
 const operate = function(operator, a, b) {
   return +format(getFunction(operator)(a, b), {precision: 14});
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+ return a * b;
+}
+
+function divide(a, b) {
+  return a / b;
+}
+
+function format(result, options) {
+  return parseFloat(result).toFixed(options.precision);
 }
 
 function getFunction(operator) {
@@ -18,20 +36,3 @@ function getFunction(operator) {
 }
 
 // module.exports = operate;
-
-
-// function add(a, b) {
-//   return +math.format(math.add(a, b), {precision: 14});
-// }
-
-// function subtract(a, b) {
-//   return +math.format(math.subtract(a, b), {precision: 14});
-// }
-
-// function multiply(a, b) {
-//  return +math.format(math.multiply(a, b), {precision: 14});
-// }
-
-// function divide(a, b) {
-//   return +math.format(math.divide(a, b), {precision: 14});
-// }
