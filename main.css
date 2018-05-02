@@ -54,7 +54,7 @@ body {
 
 .keypad {
   display: grid;
-  grid: repeat(6, 1fr) / repeat(4, 1fr);
+  grid: repeat(7, 1fr) / repeat(5, 1fr);
   grid-gap: 3px;
 }
 

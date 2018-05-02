@@ -1,6 +1,7 @@
 const calculator = {
   stack: [],
   scope: [],
+  PI: Math.PI,
 
   insertFnInStack: function(fn) {
     let insertionIndex = this.calculateFnIndex(fn.name);
@@ -38,9 +39,8 @@ const calculator = {
     return _stack.slice(0);
   },
 
-  pushUnaryFn: function(fnName, operand) {
-    this.stack.push(operate(fnName, [+operand]));
-    return this.peek();
+  calcUnaryFn: function(fnName, operand) {
+    return operate(fnName, [+operand]);
   },
 
   pushNaryFn: function(fnName, arity, operand) {
