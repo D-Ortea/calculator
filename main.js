@@ -2,20 +2,20 @@ const expression = document.querySelector(`div[class="expression"]`);
 const numInput = document.querySelector(`div[class="num-input"`);
 const keypad = document.querySelector(`div[class="keypad"`);
 
+const APPEND = true;
+
 let deleteInput = true;
 let subexpression = '';
 
 function addNumberKeyListeners() {
-  const numKeys = keypad.querySelectorAll('.num');
-  numKeys.forEach(numKey => {
+  keypad.querySelectorAll('.num').forEach(numKey => {
     numKey.addEventListener('click', () => {
       if (deleteInput) {
-        numInput.textContent = '';
+        input('');
         deleteInput = false;
       }
-      numInput.textContent += 
-          (numKey.value === '.' && numInput.textContent.indexOf('.') != -1)
-              ? '' : numKey.value;
+      input((numKey.value === '.' && numInput.textContent.indexOf('.') != -1)
+        ? '' : numKey.value, APPEND);
     });
   });
 }
@@ -23,44 +23,51 @@ function addNumberKeyListeners() {
 function addConstListeners() {
   keypad.querySelectorAll('.const').forEach(consKey => {
     consKey.addEventListener('click', () => {
-      numInput.textContent = calculator[consKey.value];
+      input(calculator[consKey.value]);
     })
   });
 }
 
 function addFnListeners() {
-  const fnKeys = keypad.querySelectorAll('.fn');
-  fnKeys.forEach(fnKey => {
+  keypad.querySelectorAll('.calc-fn').forEach(fnKey => {
     fnKey.addEventListener('click', () => resolveFn(fnKey.value));
   });
 }
 
 function addOpListeners() {
-  const opKeys = keypad.querySelectorAll('.op');
-  opKeys.forEach(opKey => {
-    opKey.addEventListener('click', () => {
+  keypad.querySelectorAll('.fn').forEach(fn => {
+    fn.addEventListener('click', () => {
       deleteInput = true;
-      if (+opKey.dataset.arity === 1) {
-        expression.textContent = subexpression.slice(0, -subexpression.length);
-        expression.textContent += getNewSubexpression(opKey.value);
-        numInput.textContent = calculator.calcUnaryFn(opKey.value
-            , numInput.textContent);            
+      if (+fn.dataset.arity === 1) {
+        outputUnaryFn(fn);
       } else {
-        expression.textContent += (subexpression) ? ` ${opKey.textContent} `
-            :`${+numInput.textContent} ${opKey.textContent} `;
-        
-        numInput.textContent = 
-             calculator.pushNaryFn(
-                 opKey.value, opKey.dataset.arity, numInput.textContent);
-        subexpression = '';
+        outputNaryFn(fn);
       }
     });
   });
 }
 
+function outputUnaryFn(fn) {
+  if (subexpression) {
+    addToExpr(expression.textContent.slice(0, -subexpression.length));
+  }
+  addToExpr(getNewSubexpression(fn.value), APPEND);
+  input(calculator.calcUnaryFn(fn.value, numInput.textContent));
+}
+
+function outputNaryFn(fn) {
+  if(subexpression) {
+    addToExpr(` ${fn.textContent} `, APPEND)
+  } else {
+    addToExpr(`${+numInput.textContent} ${fn.textContent} `, APPEND);
+  }
+  input(calculator.pushNaryFn(fn.value, fn.dataset.arity, numInput.textContent));
+  subexpression = '';
+}
+
 function getNewSubexpression(fnName) {
   subexpression = (subexpression) ? `${fnName}(${subexpression})`
-      : `${fnName}(${+numInput.textContent})`;
+    : `${fnName}(${+numInput.textContent})`;
   return subexpression;
 }
 
@@ -69,33 +76,33 @@ function resolveFn(key, ...args) {
 }
 
 function openParenthesis() {
-  expression.textContent += '(';
+  addToExpr('(', APPEND);
   calculator.increaseScope();
 }
 
 function closeParenthesis() {
-  expression.textContent += `${numInput.textContent}) `;
-  numInput.textContent = calculator.decreaseScope(numInput.textContent);
+  addToExpr(`${numInput.textContent}) `, APPEND);
+  input(calculator.decreaseScope(numInput.textContent));
 }
 
 function deleteOne() {
   const test = numInput.textContent.slice(0, -1);
 
   if (test) {
-    numInput.textContent = test;
+    input(test);
   } else {
     clearInput();
   }
 }
 
 function clearInput() {
-  numInput.textContent = '0';
+  input('0');
   subexpression = '';
   deleteInput = true;
 }
 
 function clearAll() {
-  expression.textContent = '';
+  addToExpr('');
   calculator.reset();
   clearInput();
 }
@@ -103,7 +110,23 @@ function clearAll() {
 function equals() {
   const result = calculator.resolve(numInput.textContent);
   clearAll();
-  numInput.textContent = result;
+  input(result);
+}
+
+function input(txt, append = false) {
+  if (append) {
+    numInput.textContent += txt;
+  } else {
+    numInput.textContent = txt;
+  }
+}
+
+function addToExpr(txt, append = false) {
+  if (append) {
+    expression.textContent += txt;
+  } else {
+    expression.textContent = txt;
+  }
 }
 
 addNumberKeyListeners();
