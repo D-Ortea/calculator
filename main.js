@@ -11,6 +11,15 @@ let subexpression = '';
 let calcType = SCIENTIFIC;
 let mayusClicked = false;
 
+function main() {
+  populateKeypad();
+  addNumberKeyListeners();
+  addCalcFnListeners();
+  addFnListeners();
+  addConstListeners();
+  addSwitchBtnsListeners();
+}
+
 function addNumberKeyListeners() {
   keypad.querySelectorAll('.num').forEach(numKey => {
     numKey.addEventListener('click', () => {
@@ -53,7 +62,11 @@ function addSwitchBtnsListeners() {
 function swapMode(mode) {
   calcType = +mode;
   while(keypad.firstElementChild) { keypad.removeChild(keypad.firstElementChild); }
-  populateKeypad();
+  let rows, cols;
+  [rows, cols] = (calcType===STANDARD) ? [6, 4] : [7, 5];
+  document.documentElement.style.setProperty('--keypadRows', rows);
+  document.documentElement.style.setProperty('--keypadCols', cols);
+  main();
 }
 
 function executeFn(fn) {
@@ -233,9 +246,4 @@ const keyBtns = [
   { name: 'modulus', arity: 2, text: 'Mod', expr: 'mod', class: ['cell', 'fn'], display: false, order: [4, 10] }
 ];
 
-populateKeypad();
-addNumberKeyListeners();
-addCalcFnListeners();
-addFnListeners();
-addConstListeners();
-addSwitchBtnsListeners();
+main();
