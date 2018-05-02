@@ -3,8 +3,6 @@ const numInput = document.querySelector(`div[class="num-input"`);
 const keypad = document.querySelector(`div[class="keypad"`);
 
 let deleteInput = true;
-let result = 0;
-let previousOp = '';
 
 
 function addNumberKeyListeners() {
@@ -31,20 +29,19 @@ function addOpListeners() {
   const opKeys = keypad.querySelectorAll('.op');
   opKeys.forEach(opKey => {
     opKey.addEventListener('click', () => {
-
-      if(deleteInput) {
-        expression.textContent = expression.textContent.slice(0, -3);
-      } else {
-        expression.textContent += numInput.textContent;
-        result = (previousOp) ? operate(previousOp, +result, +numInput.textContent)
-                              : +numInput.textContent;
-        numInput.textContent = result;
-      }
-      
-      previousOp = opKey.value;
-      expression.textContent += ` ${opKey.textContent} `;
       deleteInput = true;
+      if (+opKey.dataset.arity === 1) {
+        expression.textContent += ` ${opKey.value}(${+numInput.textContent}) `;
+        numInput.textContent = calculator.pushUnaryFn(opKey.value
+            , numInput.textContent);            
+      } else {
+        expression.textContent += 
+            `${+numInput.textContent} ${opKey.textContent} `;
 
+        numInput.textContent = 
+             calculator.pushNaryFn(
+                 opKey.value, opKey.dataset.arity, numInput.textContent);
+      }
     });
   });
 }
@@ -53,10 +50,20 @@ function resolveFn(key, ...args) {
   window[key](args);
 }
 
+function openParenthesis() {
+  expression.textContent += '(';
+  calculator.increaseScope();
+}
+
+function closeParenthesis() {
+  expression.textContent += `${numInput.textContent}) `;
+  numInput.textContent = calculator.decreaseScope(numInput.textContent);
+}
+
 function deleteOne() {
   const test = numInput.textContent.slice(0, -1);
-  
-  if(test) {
+
+  if (test) {
     numInput.textContent = test;
   } else {
     clearInput();
@@ -70,19 +77,16 @@ function clearInput() {
 
 function clearAll() {
   expression.textContent = '';
+  calculator.reset();
   clearInput();
 }
 
-function evaluate() {
-  
+function equals() {
+  const result = calculator.resolve(numInput.textContent);
+  clearAll();
+  numInput.textContent = result;
 }
 
-function test() {
-  console.log(expression);
-  console.log(numInput);
-}
-
-test();
 addNumberKeyListeners();
 addFnListeners();
 addOpListeners();

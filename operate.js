@@ -1,5 +1,5 @@
-const operate = function(operator, a, b) {
-  return +format(getFunction(operator)(a, b), {precision: 14});
+const operate = function(fnName, args) {
+  return +format(getFunction(fnName)(...args), {precision: 14});
 }
 
 function add(a, b) {
@@ -18,12 +18,24 @@ function divide(a, b) {
   return a / b;
 }
 
+function square(a) {
+  return a * a;
+}
+
+function squareRoot(a) {
+  return Math.sqrt(a);
+}
+
+function inverse(a) {
+  return 1 / a;
+}
+
 function format(result, options) {
   return parseFloat(result).toFixed(options.precision);
 }
 
-function getFunction(operator) {
-  switch(operator) {
+function getFunction(fnName) {
+  switch(fnName) {
     case '+':
       return add;
     case '-':
@@ -32,6 +44,12 @@ function getFunction(operator) {
       return multiply;
     case '/':
       return divide;
+    case 'sqr':
+      return square;
+    case 'sqrt':
+      return squareRoot;
+    case '1/':
+      return inverse;
   }
 }
 
