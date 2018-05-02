@@ -72,45 +72,40 @@ function negate(a) {
   return -a;
 }
 
+function cube(a) {
+  return Math.pow(a, 3);
+}
+
+function yroot(a, b) {
+  return Math.pow(b, 1/a);
+}
+
+function arcsine(a) {
+  return Math.asin(a);
+}
+
+function arccosine(a) {
+  return Math.acos(a);
+}
+
+function arctangent(a) {
+  return Math.atan(a);
+}
+
+function epow(a) {
+  return Math.exp(a);
+}
+
+function logn(a) {
+  return Math.log(a);
+}
+
 function format(result, options) {
   return parseFloat(result).toFixed(options.precision);
 }
 
 function getFunction(fnName) {
-  switch(fnName) {
-    case '+':
-      return add;
-    case '-':
-      return subtract;
-    case '*':
-      return multiply;
-    case '/':
-      return divide;
-    case 'sqr':
-      return square;
-    case 'sqrt':
-      return squareRoot;
-    case '1/':
-      return inverse;
-    case 'pow':
-      return power;
-    case 'sin':
-      return sine;
-    case 'cos':
-      return cosine;
-    case 'tan':
-      return tangent;
-    case '10^':
-      return pow10;
-    case 'log10':
-      return log10;
-    case 'mod':
-      return modulus;
-    case 'fact':
-      return factorial;
-    case 'negate':
-      return negate;
-  }
+  return window[fnName];
 }
 
 // module.exports = operate;

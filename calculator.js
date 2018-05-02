@@ -79,14 +79,18 @@ const calculator = {
 
   getPrecedence: function(fnName) {
     switch (fnName) {
-      case '+':
-      case '-':
+      case 'add':
+      case 'subtract':
         return 1;
-      case '*':
-      case '/':
+      case 'modulus':
         return 2;
-      case '^':
+      case 'multiply':
+      case 'divide':
         return 3;
+      case 'power':
+      case 'exp':
+      case 'yroot':
+        return 4;
       default:
         return 10;
     }
