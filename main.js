@@ -17,7 +17,6 @@ function main() {
   addCalcFnListeners();
   addFnListeners();
   addConstListeners();
-  addSwitchBtnsListeners();
 }
 
 function addNumberKeyListeners() {
@@ -61,7 +60,7 @@ function addSwitchBtnsListeners() {
 
 function swapMode(mode) {
   calcType = +mode;
-  while(keypad.firstElementChild) { keypad.removeChild(keypad.firstElementChild); }
+  keypad.innerHTML = '';
   let rows, cols;
   [rows, cols] = (calcType===STANDARD) ? [6, 4] : [7, 5];
   document.documentElement.style.setProperty('--keypadRows', rows);
@@ -231,7 +230,7 @@ const keyBtns = [
   { name: 'openParenthesis', text: '(', class: ['cell', 'calc-fn'], order: [, 31] },
   { name: 'closeParenthesis', text: ')', class: ['cell', 'calc-fn'], order: [, 32] },
   { name: 'zero', text: '0', class: ['cell', 'num'], order: [22, 33] },
-  { name: 'dot', text: '.', class: ['cell', 'num'], order: [23, 34] },
+  { name: '.', text: '.', class: ['cell', 'num'], order: [23, 34] },
   { name: 'equals', arity: 1, text: '=', class: ['cell', 'calc-fn'], order: [24, 35] },
 
   { name: 'cube', arity: 1, text: 'x³', expr: 'cube', class: ['cell', 'fn'], display: false, order: [, 1] },
@@ -246,4 +245,5 @@ const keyBtns = [
   { name: 'modulus', arity: 2, text: 'Mod', expr: 'mod', class: ['cell', 'fn'], display: false, order: [4, 10] }
 ];
 
+addSwitchBtnsListeners();
 main();

@@ -10,13 +10,14 @@ body {
 .container {
   background: hsla( 1, 100%, 100%, 0.2);
   width: 450px;
+  max-height: 600px;
   margin: 100px auto 0 auto;
   padding: 10px 5px;
 }
 
 .calculator {
   display: grid;
-  grid: 2fr 5fr / 1fr;
+  grid: 160px auto / 1fr;
   grid-gap: 5px 0;
 }
 
@@ -33,7 +34,8 @@ body {
   justify-items: right;
   
   border: 2px solid hsla( 1, 100%, 100%, 0.2);
-  color: white;
+  background: #282C34;
+  color: #ABB2BF;
   
   font-family: Consolas, monospace;
   font-weight: 0;
@@ -63,35 +65,51 @@ body {
   align-self: center;
   
   font-size: 40px;
-  font-weight: bold;
 }
 
 .type-btn {
-  font-weight: bold;
+  font-size: 17px;
+  border: 1px solid hsla( 1, 100%, 100%, 0.2);
+  outline: none;
+  background: #282C34;
+  color: #ABB2BF;
+  padding: 5px 0;
+  margin-left: 5px;
 }
 
 .keypad {
   display: grid;
   grid: repeat(var(--keypadRows), 1fr) / repeat(var(--keypadCols), 1fr);
-  grid-gap: 3px;
+  grid-gap: 1px;
 }
 
 .cell {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: 'Cambria Math', Cochin, Georgia, Times, 'Times New Roman', serif;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 17px;
   line-height: 50px;
-  border: none;
+  border: 1px solid transparent;
   outline:none;
 }
+
+.cell:hover, .type-btn:hover {
+  border: 1px solid #98C379;  
+  background: #444349;
+  color: #cac8d1;
+}
+
+.cell:active,  .type-btn:active {
+  background: #706f77;
+  color: #cac8d1;
+  transform: scale(0.98);
+}
+
 .num {
-  background: lightslategray;
+  background: #282C34;
+  color: #98C379;
 }
 
-.calc-fn {
-  background: lightcoral;
-}
-
-.fn {
-  background: whitesmoke;
+.calc-fn, .fn, .const {
+  background: rgb(45, 49, 58);
+  color: #E06C75;
 }
