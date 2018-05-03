@@ -13,7 +13,6 @@ let calcType = SCIENTIFIC;
 
 function main() {
   populateKeypad();
-  addKeyListeners();
   addNumberKeyListeners();
   addCalcFnListeners();
   addFnListeners();
@@ -79,7 +78,7 @@ function swapMode(btn) {
   switchOff();
   calcType = +btn.value;
   switchOn(btn);
-  
+
   keypad.innerHTML = '';
   let rows, cols;
   [rows, cols] = (calcType === STANDARD) ? [6, 4] : [7, 5];
@@ -290,5 +289,6 @@ const keyBtns = [
   { name: 'modulus', arity: 2, text: 'Mod', expr: 'mod', class: ['cell', 'fn'], display: false, order: [4, 10], keyCode: 'd' }
 ];
 
+addKeyListeners();
 addSwitchBtnsListeners();
 main();
