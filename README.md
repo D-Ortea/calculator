@@ -12,7 +12,7 @@ There are two types of calculators currently implemented.
 * A standard calculator, with only some basic functions, namely:
   * Square root
   * Square
-  * Inverse
+  * Reciprocal
   * Modulo operation
   * Negate
   * Basic arithmetic functions add, subtract, multiply and divide

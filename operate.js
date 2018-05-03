@@ -26,7 +26,7 @@ function squareRoot(a) {
   return Math.sqrt(a);
 }
 
-function inverse(a) {
+function reciprocal(a) {
   return 1 / a;
 }
 
